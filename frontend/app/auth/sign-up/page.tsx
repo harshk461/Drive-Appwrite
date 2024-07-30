@@ -2,14 +2,20 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
+import { SignUp } from "@/actions/auth/auth";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import Loader from "@/app/component/Loader";
 
-export default function SignUp() {
+export default function Signup() {
+  const router = useRouter();
   const [data, setData] = useState({
     name: "",
     email: "",
     password: "",
     cnf_password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -17,6 +23,16 @@ export default function SignUp() {
       ...pre,
       [name]: value,
     }));
+  };
+
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (data.password.trim() !== data.cnf_password.trim()) {
+      toast.error("Enter Both password same");
+      return;
+    }
+    await SignUp(data.name, data.email, data.password, setLoading);
+    router.replace("/");
   };
   return (
     <div className="mt-12 flex flex-col items-center">
@@ -66,7 +82,10 @@ export default function SignUp() {
           </div>
         </div>
 
-        <form className="mx-auto max-w-xs flex flex-col gap-3">
+        <form
+          className="mx-auto max-w-xs flex flex-col gap-3"
+          onSubmit={handleSubmit}
+        >
           <input
             className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
             type="text"
@@ -128,6 +147,7 @@ export default function SignUp() {
             </Link>
           </p>
         </form>
+        {loading && <Loader />}
       </div>
     </div>
   );

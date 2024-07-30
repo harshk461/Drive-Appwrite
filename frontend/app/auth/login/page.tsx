@@ -1,10 +1,13 @@
 "use client";
 
 import { loginUser } from "@/actions/auth/auth";
+import Loader from "@/app/component/Loader";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Login() {
+  const router = useRouter();
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -22,6 +25,7 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await loginUser(data.email, data.password, setLoading);
+    router.replace("/");
   };
 
   return (
@@ -115,8 +119,8 @@ export default function Login() {
             </Link>
           </p>
         </form>
+        {loading && <Loader />}
       </div>
-      {loading && <h1>Loading...</h1>}
     </div>
   );
 }

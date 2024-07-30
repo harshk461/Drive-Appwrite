@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import FileBox from "../component/FileBox";
 
 interface File {
+  file: string;
   $id: string;
   name: string;
   type: string;
@@ -21,8 +22,8 @@ export default function Starred() {
     const getStarred = async () => {
       try {
         setLoading(true);
-        const data = await GetAllStarredFile();
-        setData(data);
+        const res: any = GetAllStarredFile();
+        setData(res);
       } catch (e) {
         console.log(e);
       } finally {
@@ -38,8 +39,21 @@ export default function Starred() {
         {loading && (
           <div className="w-[50px] h-[50px] rounded-full animate-spin border-4 border-gray-400 dark:border-white border-t-gray-800 dark:border-t-gray-400 m-auto"></div>
         )}
+        {!loading && data.length === 0 && (
+          <div>
+            <img
+              src="./assets/images/no_data.jpg"
+              alt="no data"
+              className="aspect-w-4 aspect-h-3 m-auto w-[300px] h-[300px]"
+            />
+            <h1 className="text-lg font-semibold text-center">
+              No Data Present
+            </h1>
+          </div>
+        )}
         {data.map((file, index) => (
           <FileBox
+            file={file.file}
             $id={file.$id}
             key={index}
             name={file.name}

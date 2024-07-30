@@ -57,7 +57,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
     <div className="relative inline-block w-42" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className="flex items-center justify-between w-full px-6 py-2 text-gray-700 bg-gray-800 rounded-full dark:bg-gray-800 dark:border-none"
+        className="flex items-center justify-between w-full px-6 py-2 text-gray-700 bg-gray-800 rounded-full   dark:bg-gray-800 dark:border-none"
       >
         <span className="flex items-center">
           {selectedFileType ? (

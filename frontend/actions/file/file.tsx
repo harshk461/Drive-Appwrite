@@ -69,8 +69,8 @@ export const getAllData = async () => {
       throw new Error("User is not authenticated");
     }
     const response = await database.listDocuments(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
-      process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID,
+      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
       [Query.equal("email", user.email)]
     );
 
@@ -169,6 +169,18 @@ export const DownloadFile = async (id: string) => {
   }
 };
 
+export const GetFileView = async (id: string) => {
+  try {
+    const res = await storage.getFileView(
+      process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!,
+      id
+    );
+    window.open(res.href);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const StarFile = async (id: string) => {
   try {
     await database.updateDocument(
@@ -193,8 +205,8 @@ export const GetAllStarredFile = async () => {
       toast.error("User is not authenticated");
     }
     const response = await database.listDocuments(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
-      process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID,
+      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
       [Query.equal("starred", true), Query.equal("email", user.email)]
     );
 

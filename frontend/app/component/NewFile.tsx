@@ -1,37 +1,39 @@
 "use client";
 
 import { AddNewFile } from "@/actions/file/file";
-import { account, getUser } from "@/Utils/appwrite";
-import React, { useState, useEffect, useRef } from "react";
+import { getUser } from "@/Utils/appwrite";
+import React, { useState, useEffect } from "react";
 import { CgClose } from "react-icons/cg";
 
 export default function NewFile({ setIsOpen }: { setIsOpen: Function }) {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const handleSubmit = async () => {
     setLoading(true);
-    if (file) {
+    if (file && email.trim() !== "") {
       await AddNewFile({ file, name, email });
       setIsOpen(false);
     }
     setLoading(false);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFile(e.target.files[0]);
-  };
-
   useEffect(() => {
     const fetchUser = async () => {
       const userData = await getUser();
-      setEmail(userData?.email);
+      const email = userData?.email ?? "";
+      setEmail(email);
     };
 
     fetchUser();
   }, []);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+    }
+  };
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
       <CgClose

@@ -11,12 +11,14 @@ import { Pencil, Trash, Download, Star, StarOff } from "lucide-react";
 import {
   DeleteFile,
   DownloadFile,
+  GetFileView,
   StarFile,
   UnStartFile,
 } from "@/actions/file/file";
 import Link from "next/link";
 
 interface File {
+  file: string;
   $id: string;
   name: string;
   type: string;
@@ -109,18 +111,14 @@ const FileTable: React.FC<FileTableProps> = ({ data }: { data: File[] }) => {
       <tbody>
         {data.map((file, index) => (
           <tr key={index} className="relative group">
-            <td className="text-left text-gray-400 flex items-center gap-2">
-              <Link href={file.previewUrl} target="_blank">
-                <div>
-                  {getFileIcon(file.type.split("/")[1])}
-                  {file.name}
-                </div>
-              </Link>
+            <td className="text-left text-white flex items-center gap-2">
+              <div onClick={() => GetFileView(file.file)}>
+                {getFileIcon(file.type.split("/")[1])}
+                {file.name}
+              </div>
             </td>
-            <td className="text-left text-gray-400">
-              {file.type.split("/")[1]}
-            </td>
-            <td className="text-left text-gray-400">
+            <td className="text-left text-white">{file.type.split("/")[1]}</td>
+            <td className="text-left text-white">
               {formatDate(file.createdAt)}
             </td>
             <td className="text-left">

@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 export default function Navbar() {
   const { setTheme } = useTheme();
   const theme = localStorage.getItem("theme");
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
   useEffect(() => {
     getUser().then((user) => {
       setUser(user);

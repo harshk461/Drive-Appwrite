@@ -16,10 +16,11 @@ import FileBox from "./component/FileBox";
 import FileTable from "./component/FileTable";
 import NewFile from "./component/NewFile";
 import { fileTypes } from "../Constants/Constants";
-import { DeleteFile, getAllData } from "@/actions/file/file";
+import { getAllData, GetFileView } from "@/actions/file/file";
 import Link from "next/link";
 
 interface File {
+  file: string;
   $id: string;
   name: string;
   type: string;
@@ -34,22 +35,25 @@ type FileType = {
 };
 
 export default function Page() {
-  // const filetypes = fileTypes;
-
   const [data, setData] = useState<File[]>([]);
   const [display, setDisplay] = useState(1);
   const [newFileDisplay, setNewFileDisplay] = useState(false);
   const [filter, setFilter] = useState("");
   const [filterData, setFilterData] = useState<File[]>([]);
-  const [selectedFileType, setSelectedFileType] = useState(null);
+  const [selectedFileType, setSelectedFileType] = useState<FileType | null>(
+    null
+  );
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const getData = async () => {
       try {
         setLoading(true);
-        const data = await getAllData();
-        setData(data);
-        setFilterData(data);
+        const res: any = await getAllData();
+        if (res) {
+          setData(res);
+          setFilterData(res);
+        }
       } catch (e) {
         console.log(e);
       } finally {
@@ -99,7 +103,10 @@ export default function Page() {
           <h1 className="text-lg font-medium">Home</h1>
         </div>
 
-        <div className="w-full px-8 py-2 flex gap-2 items-center mt-3 bg-[#2C497F] text-white rounded-lg dark:bg-gray-700">
+        <div
+          onClick={() => GetFileView("66a90300002910fc4b91")}
+          className="w-full px-8 py-2 flex gap-2 items-center mt-3 bg-[#2C497F] text-white rounded-lg dark:bg-gray-700"
+        >
           <HardDrive />
           <h1 className="text-lg font-medium">Drive</h1>
         </div>
@@ -169,7 +176,7 @@ export default function Page() {
           {/* Table Structure of files */}
           {display == 1 && (
             <div className="w-full flex flex-col">
-              {filterData.length === 0 ? (
+              {filterData && filterData.length === 0 ? (
                 <div className="text-white text-center text-2xl">
                   {loading ? (
                     <div className="w-[50px] h-[50px] rounded-full animate-spin border-4 border-gray-400 dark:border-white border-t-gray-800 dark:border-t-gray-400 m-auto"></div>
@@ -196,6 +203,7 @@ export default function Page() {
               ) : (
                 filterData.map((file, index) => (
                   <FileBox
+                    file={file.file}
                     $id={file.$id}
                     key={index}
                     name={file.name}

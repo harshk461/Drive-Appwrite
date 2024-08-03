@@ -1,7 +1,7 @@
 "use client";
 
 import { loginUser } from "@/actions/auth/auth";
-import Loader from "@/app/component/Loader";
+import Loader from "@/component/Loader";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";

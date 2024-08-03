@@ -2,7 +2,7 @@
 
 import { GetAllStarredFile } from "@/actions/file/file";
 import React, { useEffect, useState } from "react";
-import FileBox from "../component/FileBox";
+import FileBox from "../../component/FileBox";
 
 interface File {
   file: string;

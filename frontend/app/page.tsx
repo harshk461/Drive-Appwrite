@@ -11,10 +11,10 @@ import {
   Star,
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import CustomDropdown from "./component/CustomDropDown";
-import FileBox from "./component/FileBox";
-import FileTable from "./component/FileTable";
-import NewFile from "./component/NewFile";
+import CustomDropdown from "../component/CustomDropDown";
+import FileBox from "../component/FileBox";
+import FileTable from "../component/FileTable";
+import NewFile from "../component/NewFile";
 import { fileTypes } from "../Constants/Constants";
 import { getAllData, GetFileView } from "@/actions/file/file";
 import Link from "next/link";

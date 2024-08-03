@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { SignUp } from "@/actions/auth/auth";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import Loader from "@/app/component/Loader";
+import Loader from "@/component/Loader";
 
 export default function Signup() {
   const router = useRouter();

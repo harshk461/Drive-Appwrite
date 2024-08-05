@@ -41,7 +41,7 @@ export default function Page() {
   const [filter, setFilter] = useState("");
   const [filterData, setFilterData] = useState<File[]>([]);
   const [selectedFileType, setSelectedFileType] = useState<FileType | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState(false);
 
@@ -73,12 +73,12 @@ export default function Page() {
     let filteredData = data;
     if (fileType && fileType.value !== "all") {
       filteredData = filteredData.filter(
-        (file) => file.type.split("/")[1] === fileType.value
+        (file) => file.type.split("/")[1] === fileType.value,
       );
     }
     if (searchTerm) {
       filteredData = filteredData.filter((file) =>
-        file.name.toLowerCase().includes(searchTerm.toLowerCase())
+        file.name.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
     setFilterData(filteredData);

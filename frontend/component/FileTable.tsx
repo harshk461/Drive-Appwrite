@@ -112,7 +112,10 @@ const FileTable: React.FC<FileTableProps> = ({ data }: { data: File[] }) => {
         {data.map((file, index) => (
           <tr key={index} className="relative group">
             <td className="text-left text-white flex items-center gap-2">
-              <div onClick={() => GetFileView(file.file)}>
+              <div
+                className="cursor-pointer"
+                onClick={() => GetFileView(file.file)}
+              >
                 {getFileIcon(file.type.split("/")[1])}
                 {file.name}
               </div>

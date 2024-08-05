@@ -33,7 +33,7 @@ export default function Login() {
       <h1 className="text-2xl xl:text-3xl font-extrabold">Sign In</h1>
       <div className="w-full flex-1 mt-8">
         <div className="flex flex-col items-center">
-          <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
+          <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 dark:bg-gray-600 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
             <div className="bg-white p-2 rounded-full">
               <svg className="w-4" viewBox="0 0 533.5 544.3">
                 <path
@@ -57,7 +57,7 @@ export default function Login() {
             <span className="ml-4">Sign In with Google</span>
           </button>
 
-          <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5">
+          <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 dark:bg-gray-600 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5">
             <div className="bg-white p-1 rounded-full">
               <svg className="w-6" viewBox="0 0 32 32">
                 <path
@@ -70,15 +70,13 @@ export default function Login() {
           </button>
         </div>
 
-        <div className="my-12 border-b text-center">
-          <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-            Or sign in with e-mail
-          </div>
-        </div>
+        <div className="my-12 text-center">Or sign in with e-mail</div>
 
         <form className="mx-auto max-w-xs" onSubmit={handleSubmit}>
           <input
-            className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+            className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200
+             placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white
+             dark:bg-gray-900 dark:border-none"
             type="email"
             placeholder="Email"
             name="email"
@@ -86,7 +84,9 @@ export default function Login() {
             onChange={handleChange}
           />
           <input
-            className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+            className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200
+             placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5
+             dark:bg-gray-900 dark:border-none"
             type="password"
             placeholder="Password"
             name="password"

@@ -22,7 +22,8 @@ export default function Starred() {
     const getStarred = async () => {
       try {
         setLoading(true);
-        const res: any = GetAllStarredFile();
+        const res: any = await GetAllStarredFile();
+        console.log(res);
         setData(res);
       } catch (e) {
         console.log(e);
@@ -51,17 +52,18 @@ export default function Starred() {
             </h1>
           </div>
         )}
-        {data.map((file, index) => (
-          <FileBox
-            file={file.file}
-            $id={file.$id}
-            key={index}
-            name={file.name}
-            type={file.type}
-            createdAt={file.createdAt}
-            url={file.previewUrl ? file.previewUrl : ""}
-          />
-        ))}
+        {data.length > 0 &&
+          data.map((file, index) => (
+            <FileBox
+              file={file.file}
+              $id={file.$id}
+              key={index}
+              name={file.name}
+              type={file.type}
+              createdAt={file.createdAt}
+              url={file.previewUrl ? file.previewUrl : ""}
+            />
+          ))}
       </div>
     </div>
   );

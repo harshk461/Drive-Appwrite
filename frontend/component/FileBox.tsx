@@ -106,7 +106,7 @@ const FileBox: React.FC<FileBoxProps> = ({
   };
 
   return (
-    <div className="w-full md:w-[250px] p-3 rounded-lg flex flex-col bg-gray-400 gap-2">
+    <div className="w-full md:w-[250px] p-3 rounded-lg flex flex-col bg-[#34a0a4] dark:bg-gray-800 gap-2">
       <div className="flex justify-between items-center">
         <div
           onClick={() => GetFileView(file)}

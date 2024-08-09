@@ -77,6 +77,7 @@ export default function Page() {
         setLoading(false);
       }
     };
+    // logger.info("sjdkd");
 
     getData();
   }, [newFileDisplay, user]);
@@ -106,7 +107,7 @@ export default function Page() {
   }, [selectedFileType, data]);
 
   return (
-    <div className="w-full h-full flex lg:flex-row flex-col items-center justify-center p-6 gap-4">
+    <div className="w-full h-full flex lg:flex-row flex-col items-start justify-center p-6 gap-4">
       {!user ? (
         <div className="text-2xl font-semibold text-white">
           Please log in to access your files.
@@ -116,19 +117,19 @@ export default function Page() {
           <div className="w-full lg:w-1/4 flex flex-col p-4 rounded-lg items-start">
             <button
               onClick={() => setNewFileDisplay(true)}
-              className="w-full px-4 py-2 text-xl font-semibold bg-[#2C497F] text-white rounded-lg flex items-center dark:bg-gray-700"
+              className="w-full px-4 py-2 text-xl font-semibold bg-[#00a8e8] text-white rounded-lg flex items-center dark:bg-gray-700"
             >
               <Plus />
               New
             </button>
-            <div className="w-full px-8 py-2 flex gap-2 items-center mt-3 bg-[#2C497F] text-white rounded-lg dark:bg-gray-700">
+            <div className="w-full px-8 py-2 flex gap-2 items-center mt-3 bg-[#00a8e8] text-white rounded-lg dark:bg-gray-700">
               <Home />
               <h1 className="text-lg font-medium">Home</h1>
             </div>
 
             <div
               onClick={() => GetFileView("66a90300002910fc4b91")}
-              className="w-full px-8 py-2 flex gap-2 items-center mt-3 bg-[#2C497F] text-white rounded-lg dark:bg-gray-700"
+              className="w-full px-8 py-2 flex gap-2 items-center mt-3 bg-[#00a8e8] text-white rounded-lg dark:bg-gray-700"
             >
               <HardDrive />
               <h1 className="text-lg font-medium">Drive</h1>
@@ -136,19 +137,19 @@ export default function Page() {
 
             <Link
               href="/starred"
-              className="w-full px-8 py-2 flex gap-2 items-center mt-3 bg-[#2C497F] text-white rounded-lg dark:bg-gray-700"
+              className="w-full px-8 py-2 flex gap-2 items-center mt-3 bg-[#00a8e8] text-white rounded-lg dark:bg-gray-700"
             >
               <Star />
               <h1 className="text-lg font-medium">Starred</h1>
             </Link>
           </div>
 
-          <div className="w-full lg:w-3/4 flex flex-col pt-6 px-6 pb-4 rounded-2xl bg-[#2C497F] overflow-y-scroll dark:bg-gray-700">
+          <div className="w-full lg:w-3/4 flex flex-col pt-6 px-6 pb-4 rounded-2xl bg-[#00a8e8] overflow-y-scroll dark:bg-gray-700">
             <h1 className="text-2xl font-semibold text-white mx-auto">
               Welcome to Drive
             </h1>
             <div className="w-full lg:w-2/3 m-auto flex flex-col lg:flex-row gap-4 items-center mt-4">
-              <div className="w-full flex items-center justify-center px-6 py-2 rounded-full bg-gray-800 gap-4 mx-auto">
+              <div className="w-full flex items-center justify-center px-6 py-2 rounded-full bg-[#01497c] dark:bg-gray-800 gap-4 mx-auto">
                 <Search />
                 <input
                   type="text"
@@ -169,7 +170,7 @@ export default function Page() {
               <div className="flex border-2 border-white rounded-full">
                 <div
                   className={`flex items-center px-2 py-1 gap-1 rounded-l-full ${
-                    display === 1 && "bg-blue-500"
+                    display === 1 && "bg-[#30638e]"
                   }`}
                 >
                   {display === 1 && (
@@ -181,7 +182,7 @@ export default function Page() {
                 </div>
                 <div
                   className={`flex items-center px-2 py-1 gap-1 rounded-r-full border-l-2 border-l-white ${
-                    display === 2 && "bg-blue-500"
+                    display === 2 && "bg-[#30638e]"
                   }`}
                 >
                   {display === 2 && (

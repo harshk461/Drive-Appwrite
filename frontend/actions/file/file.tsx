@@ -1,5 +1,5 @@
 import { database, ID, storage, account } from "@/Utils/appwrite";
-import { Permission, Query } from "appwrite";
+import { Permission, Query, QueryTypes } from "appwrite";
 import toast from "react-hot-toast";
 
 interface Props {
@@ -8,49 +8,41 @@ interface Props {
   email: string;
 }
 
-export const AddNewFile = async ({ file, name, email }: Props) => {
+export const AddNewFile = async ({
+  file,
+  name,
+  email,
+  folderId,
+}: Props & { folderId: string | null }) => {
   try {
-    // Ensure the user is authenticated
     const user = await account.get();
-    if (!user) {
-      throw new Error("User is not authenticated");
-    }
+    if (!user) throw new Error("User is not authenticated");
 
-    // Upload the file to Appwrite Storage
     const fileResponse = await storage.createFile(
       process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!,
       ID.unique(),
       file
     );
 
-    // Generate the preview URL
     const previewUrl = storage.getFilePreview(
       process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!,
       fileResponse.$id,
-      400, // width of the preview, adjust as needed
-      400 // height of the preview, adjust as needed
+      400,
+      400
     );
 
-    // Define permissions for the document
-    const permissions = {
-      read: `user:${user.$id}`,
-      write: `user:${user.$id}`,
-      update: `user:${user.$id}`,
-      delete: `user:${user.$id}`,
-    };
-
-    // Create a document in the Appwrite Database with read/write permissions
     await database.createDocument(
       process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
       process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
       ID.unique(),
       {
         file: fileResponse.$id,
-        name: name,
+        name,
         type: file.type,
         createdAt: new Date().toISOString(),
-        email: email,
+        email,
         previewUrl: previewUrl.toString(),
+        folderId: folderId || null, // Associate with the folder
       },
       [Permission.write("any")]
     );
@@ -61,26 +53,32 @@ export const AddNewFile = async ({ file, name, email }: Props) => {
     toast.error("Failed to upload file");
   }
 };
-export const getAllData = async () => {
+
+export const getAllData = async (folderId: string | null = null) => {
   try {
-    // Ensure the user is authenticated
     const user = await account.get();
-    if (!user) {
-      throw new Error("User is not authenticated");
+    if (!user) throw new Error("User is not authenticated");
+
+    // Prepare the query based on whether folderId is null
+    const queries = [Query.equal("email", user.email)];
+
+    // Add the folderId query if folderId is not null
+    if (folderId !== null) {
+      queries.push(Query.equal("folderId", folderId));
     }
+
     const response = await database.listDocuments(
       process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
       process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
-      [Query.equal("email", user.email)]
+      queries
     );
-
-    // console.log(response);
+    console.log(response.documents);
     return response.documents;
   } catch (e) {
     console.log(e);
+    toast.error("Failed to retrieve data");
   }
 };
-
 export const DeleteFile = async (id: string) => {
   try {
     await database.deleteDocument(
@@ -169,9 +167,9 @@ export const DownloadFile = async (id: string) => {
   }
 };
 
-export const GetFileView = async (id: string) => {
+export const GetFileView = (id: string) => {
   try {
-    const res = await storage.getFileView(
+    const res = storage.getFileView(
       process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID!,
       id
     );

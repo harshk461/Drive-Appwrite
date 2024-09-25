@@ -1,11 +1,20 @@
 "use client";
 
 import { AddNewFile } from "@/actions/file/file";
+import { UploadFileInFolder } from "@/actions/folder/folder";
 import { getUser } from "@/Utils/appwrite";
 import React, { useState, useEffect } from "react";
 import { CgClose } from "react-icons/cg";
 
-export default function NewFile({ setIsOpen }: { setIsOpen: Function }) {
+export default function NewFile({
+  setFiles,
+  folderId,
+  setIsOpen,
+}: {
+  setIsOpen: Function;
+  folderId: string | null;
+  setFiles: Function | null;
+}) {
   const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -13,8 +22,22 @@ export default function NewFile({ setIsOpen }: { setIsOpen: Function }) {
   const handleSubmit = async () => {
     setLoading(true);
     if (file && email.trim() !== "") {
-      await AddNewFile({ file, name, email });
-      setIsOpen(false);
+      try {
+        const response = await UploadFileInFolder({
+          folderId,
+          file,
+          name,
+          email,
+        });
+
+        if (response && setFiles) {
+          setFiles((prevFiles: any) => [...prevFiles, response]);
+        }
+
+        setIsOpen(false);
+      } catch (error) {
+        console.log("Error uploading file: ", error);
+      }
     }
     setLoading(false);
   };

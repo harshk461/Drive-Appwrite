@@ -4,8 +4,8 @@
 
 :root {
   /* Your default theme */
-  --background: white;
-  --foreground: black;
+  background-color: #f8fafd;
+  color: black;
 }
 
 [data-theme="dark"] {

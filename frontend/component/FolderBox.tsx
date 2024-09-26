@@ -5,7 +5,7 @@ import React from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { FaFolder } from "react-icons/fa";
 
-export default function FolderBox({ folder }) {
+export default function FolderBox({ folder }: { folder: any }) {
   const router = useRouter();
   return (
     <div

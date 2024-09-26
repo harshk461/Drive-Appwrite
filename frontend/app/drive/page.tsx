@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { database, account } from "@/Utils/appwrite"; // Import Appwrite SDK
 import { Query } from "appwrite";
-import FileTable from "@/component/FileTable";
 import FileTile from "@/component/FileTile";
 import FolderTile from "@/component/FolderTile";
 
@@ -24,8 +23,7 @@ export default function Drive() {
         [Query.equal("email", user.email), Query.isNull("parentfolderId")] // Query to get folders for the user
       );
 
-      console.log(response);
-      setFolders(response.documents); // Set folders in state
+      return response.documents;
     } catch (error) {
       console.error("Failed to fetch folders", error);
     }
@@ -42,18 +40,26 @@ export default function Drive() {
         process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!, // Replace with correct collection ID for files
         [Query.equal("email", user.email), Query.isNull("folderId")] // Query to get files for the user
       );
-      setFiles(response.documents); // Set files in state
+      return response.documents;
     } catch (error) {
       console.error("Failed to fetch files", error);
     }
   };
 
   useEffect(() => {
-    setLoading(true);
-    getFolders();
-    getFiles();
-    setLoading(false);
-  }, []);
+    const fetchData = async () => {
+      setLoading(true);
+      const f: any = await getFolders();
+      const fl: any = await getFiles(); // Await the result of getFiles
+
+      setFolders(f); // Now set the state with the array of folders
+      setFiles(fl); // Now set the state with the array of files
+
+      setLoading(false);
+    };
+
+    fetchData(); // Call the fetchData function
+  }, [folders]);
 
   return (
     <div className="w-full p-6 rounded-2xl bg-white">
@@ -64,7 +70,7 @@ export default function Drive() {
           <h1 className="text-lg font-semibold">Folders</h1>
           {folders.length > 0 &&
             folders.map((item, index) => (
-              <FolderTile key={index} folder={item} />
+              <FolderTile setFolders={setFolders} key={index} folder={item} />
             ))}
           <h1 className="text-lg font-semibold">Files</h1>
           {files.length > 0 &&

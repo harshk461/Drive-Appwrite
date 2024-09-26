@@ -72,7 +72,6 @@ export const getAllData = async (folderId: string | null = null) => {
       process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
       queries
     );
-    console.log(response.documents);
     return response.documents;
   } catch (e) {
     console.log(e);

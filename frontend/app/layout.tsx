@@ -69,8 +69,20 @@ export default function RootLayout({
             <div className="w-full">{children}</div>
           </div>
           <Toaster position="top-right" />
-          {newFileDisplay && <NewFile setIsOpen={setNewFileDisplay} />}
-          {newFolder && <NewFolder setIsOpen={setNewFolder} />}
+          {newFileDisplay && (
+            <NewFile
+              setIsOpen={setNewFileDisplay}
+              setFiles={null}
+              folderId={null}
+            />
+          )}
+          {newFolder && (
+            <NewFolder
+              setFolders={null}
+              parentFolder={null}
+              setIsOpen={setNewFolder}
+            />
+          )}
         </ThemeProvider>
       </body>
     </html>

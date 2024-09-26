@@ -5,7 +5,7 @@ import {
   StarFile,
   DeleteFile,
 } from "@/actions/file/file";
-import { Pencil, Delete, Trash, Download, StarOff, Star } from "lucide-react";
+import { Pencil, Trash, Download, StarOff, Star } from "lucide-react";
 import React from "react";
 import {
   FaFilePdf,
@@ -45,7 +45,7 @@ const getFileIcon = (type: string) => {
   }
 };
 
-export default function FileTile({ file }) {
+export default function FileTile({ file }: { file: any }) {
   const Delete = async (id: string) => {
     try {
       await DeleteFile(id);

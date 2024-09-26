@@ -50,7 +50,7 @@ export default function FolderID() {
   const [newFileDisplay, setNewFileDisplay] = useState(false);
   const [newFolder, setNewFolder] = useState(false);
   const [display, setDisplay] = useState(1);
-  const folderId = useParams().folderId;
+  const folderId: any = useParams().folderId;
   const getData = async () => {
     try {
       setLoading(true);
@@ -60,7 +60,7 @@ export default function FolderID() {
         return;
       }
 
-      const responses = await database.listDocuments(
+      const responses: any = await database.listDocuments(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
         process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID!,
         [Query.equal("email", user.email), Query.equal("folderId", folderId)]
@@ -77,7 +77,7 @@ export default function FolderID() {
 
   const getAllFolder = async () => {
     try {
-      const response = await database.listDocuments(
+      const response: any = await database.listDocuments(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
         process.env.NEXT_PUBLIC_APPWRITE_FOLDER_COLLECTION_ID!,
         [Query.equal("parentfolderId", folderId)]

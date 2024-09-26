@@ -59,7 +59,7 @@ export default function FileTile({ file }: { file: any }) {
     return d.toLocaleDateString() + " " + d.toLocaleTimeString();
   };
   return (
-    <div className="flex items-center justify-between px-4 py-2 rounded-lg group hover:bg-[#e4e5e6] dark:hover:bg-gray-800">
+    <div className="flex items-center justify-between px-4 py-2 group hover:bg-[#dcddde] dark:hover:bg-[#292a2c] rounded-xl">
       <div
         className="flex-[2] flex items-center cursor-pointer"
         onClick={() => GetFileView(file.file)}
@@ -70,32 +70,32 @@ export default function FileTile({ file }: { file: any }) {
       <div className="flex-1 ">{file.type.split("/")[1]}</div>
       <div className="flex-1 ">{formatDate(file.createdAt)}</div>
       <div className="flex-1 flex justify-end items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <button className="p-2 rounded-full text-gray-400 hover:bg-gray-300 transition-all duration-200">
+        <button className="p-2 rounded-full text-gray-400 hover:bg-gray-300 transition-all duration-200 dark:hover:bg-[#1e1f20]">
           <Pencil />
         </button>
         <button
           onClick={() => Delete(file.$id)}
-          className="p-2 rounded-full text-gray-400 hover:bg-gray-300 transition-all duration-200"
+          className="p-2 rounded-full text-gray-400 hover:bg-gray-300 dark:hover:bg-[#1e1f20] transition-all duration-200"
         >
           <Trash />
         </button>
         <button
           onClick={() => DownloadFile(file.$id)}
-          className="p-2 rounded-full text-gray-400 hover:bg-gray-300 transition-all duration-200"
+          className="p-2 rounded-full text-gray-400 hover:bg-gray-300 transition-all duration-200 dark:hover:bg-[#1e1f20]"
         >
           <Download />
         </button>
         {file.starred ? (
           <button
             onClick={() => UnStartFile(file.$id)}
-            className="p-2 rounded-full text-gray-400 hover:bg-gray-300 transition-all duration-200"
+            className="p-2 rounded-full text-gray-400 hover:bg-gray-300 transition-all duration-200 dark:hover:bg-[#1e1f20]"
           >
             <StarOff />
           </button>
         ) : (
           <button
             onClick={() => StarFile(file.$id)}
-            className="p-2 rounded-full text-gray-400 hover:bg-gray-300 transition-all duration-200"
+            className="p-2 rounded-full text-gray-400 hover:bg-gray-300 transition-all duration-200 dark:hover:bg-[#1e1f20]"
           >
             <Star />
           </button>

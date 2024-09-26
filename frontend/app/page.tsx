@@ -14,12 +14,11 @@ import React, { useState, useEffect } from "react";
 import CustomDropdown from "../component/CustomDropDown";
 import FileBox from "../component/FileBox";
 import FileTable from "../component/FileTable";
-import NewFile from "../component/NewFile";
 import { fileTypes } from "../Constants/Constants";
-import { getAllData, GetFileView } from "@/actions/file/file";
-import Link from "next/link";
+import { getAllData } from "@/actions/file/file";
 import { getUser } from "@/Utils/appwrite";
 import { useRouter } from "next/navigation";
+import { useUser } from "./context/context";
 
 interface File {
   file: string;
@@ -48,25 +47,11 @@ export default function Page() {
     null
   );
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const { user } = useUser();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await getUser();
-        setUser(userData);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    fetchUser();
-  }, [user]);
-
-  useEffect(() => {
-    if (!user) return;
-
     const getData = async () => {
+      if (!user) return;
       try {
         setLoading(true);
         const res: any = await getAllData();
@@ -110,23 +95,26 @@ export default function Page() {
   }, [selectedFileType, data]);
 
   return (
-    <div className="w-full h-full flex lg:flex-row flex-col items-start justify-center bg-white rounded-2xl">
+    <div
+      className="w-full h-full flex lg:flex-row flex-col items-start justify-center bg-white rounded-2xl
+    dark:bg-[#131314]"
+    >
       {!user ? (
-        <div className="text-2xl font-semibold text-white">
+        <div className="text-2xl font-semibold text-white py-8">
           Please log in to access your files.
         </div>
       ) : (
         <>
-          <div className="w-full flex flex-col pt-6 px-6 pb-4 rounded-2xl bg-white overflow-y-scroll dark:bg-gray-700">
+          <div className="w-full flex flex-col pt-6 px-6 pb-4 rounded-2xl bg-white overflow-y-scroll dark:bg-[#131314]">
             <h1 className="text-2xl font-semibold text-white mx-auto">
               Welcome to Drive
             </h1>
             <div className="w-full lg:w-2/3 m-auto flex flex-col lg:flex-row gap-4 items-center mt-4">
-              <div className="w-full flex items-center justify-center px-6 py-2 rounded-full bg-[#E9EEF6] dark:bg-gray-800 gap-4 mx-auto">
+              <div className="w-full flex items-center justify-center px-6 py-2 rounded-full bg-[#E9EEF6] dark:bg-[#37393B] gap-4 mx-auto">
                 <Search />
                 <input
                   type="text"
-                  className="w-full bg-transparent outline-none text-md font-medium dark"
+                  className="w-full bg-transparent outline-none text-md font-medium "
                   placeholder="Search in Drive"
                   value={filter}
                   onChange={handleSearchChange}
@@ -140,34 +128,31 @@ export default function Page() {
             </div>
 
             <div className="flex justify-end items-end w-full mt-4">
-              <div className="flex border-2 border-black rounded-full">
+              <div className="flex border-2 border-black rounded-full dark:border-white">
                 <div
                   className={`flex items-center px-2 py-1 gap-1 rounded-l-full ${
-                    display === 1 && "bg-[#C2E7FF]"
+                    display === 1 && "bg-[#C2E7FF] dark:bg-blue-500"
                   }`}
                 >
                   {display === 1 && (
-                    <h1 className="text-xl font-semibold text-white">
-                      <Check size={20} color="black" />
+                    <h1 className="text-xl font-semibold text-black dark:text-white ">
+                      <Check size={20} />
                     </h1>
                   )}
-                  <Menu onClick={() => setDisplay(1)} color="black" size={20} />
+                  <Menu onClick={() => setDisplay(1)} size={20} />
                 </div>
                 <div
-                  className={`flex items-center px-2 py-1 gap-1 rounded-r-full border-l-2 border-l-white ${
-                    display === 2 && "bg-[#C2E7FF]"
-                  }`}
+                  className={`flex items-center px-2 py-1 gap-1 rounded-r-full border-l-2 border-l-white dark:border-l-black ${
+                    display === 2 && "bg-[#C2E7FF] dark:bg-blue-500"
+                  }
+              `}
                 >
                   {display === 2 && (
-                    <h1 className="text-xl font-semibold">
-                      <Check size={20} color="black" />
+                    <h1 className="text-xl font-semibold text-black dark:text-white">
+                      <Check size={20} />
                     </h1>
                   )}
-                  <Grid2X2
-                    onClick={() => setDisplay(2)}
-                    color="black"
-                    size={20}
-                  />
+                  <Grid2X2 onClick={() => setDisplay(2)} size={20} />
                 </div>
               </div>
             </div>

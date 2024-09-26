@@ -22,7 +22,7 @@ export default function FolderTile({
   return (
     <div
       onClick={() => router.push("/folder/" + folder.folderId)}
-      className="flex items-center justify-between px-4 py-2 rounded-lg group hover:bg-[#e4e5e6] dark:hover:bg-gray-800"
+      className="flex items-center justify-between px-4 py-2 rounded-lg group hover:bg-[#e4e5e6] dark:hover:bg-[#292a2c]"
     >
       <div className="flex-[2] flex items-center cursor-pointer">
         <FaFolder size={25} />

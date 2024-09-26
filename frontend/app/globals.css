@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* Your default theme */
-  background-color: #f8fafd;
-  color: black;
-}
+/* :root { */
+/* Your default theme */
+/* background-color: #f8fafd; */
+/* color: black; */
+/* } */
 
-[data-theme="dark"] {
-  --background: black;
-  --foreground: white;
-}
+/* [data-theme="dark"] { */
+/* --background: black; */
+/* --foreground: white; */
+/* } */

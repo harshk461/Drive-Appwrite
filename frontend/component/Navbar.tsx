@@ -1,28 +1,26 @@
 "use client";
 
 import { logoutUser } from "@/actions/auth/auth";
+import { useUser } from "@/app/context/context";
 import { getUser } from "@/Utils/appwrite";
 import { Moon, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function Navbar() {
   const { setTheme } = useTheme();
   const [theme, setThemeState] = useState<string | null>(null);
-  const [user, setUser] = useState<any>(null);
+  const { user, logout }: any = useUser();
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
-
+  const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedTheme = localStorage.getItem("theme");
       setThemeState(storedTheme);
     }
-
-    getUser().then((user) => {
-      setUser(user);
-    });
-  }, [user]);
+  }, []);
 
   const handleTheme = () => {
     if (!theme) {
@@ -45,8 +43,8 @@ export default function Navbar() {
   };
 
   const handleLogout = async () => {
-    await logoutUser();
-    setUser(null);
+    await logout();
+    router.replace("/auth/login");
   };
   return (
     <div className="w-full flex items-center px-8 py-6 justify-between">

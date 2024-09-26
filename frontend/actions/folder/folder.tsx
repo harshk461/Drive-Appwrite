@@ -6,7 +6,7 @@ interface Props {
   folderId: string | null;
   file: File;
   name: string;
-  email: string;
+  email: string | any;
 }
 
 export const CreateFolder = async (

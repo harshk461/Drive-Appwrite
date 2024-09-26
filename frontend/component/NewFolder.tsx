@@ -1,6 +1,9 @@
+"use client";
+
 import { CreateFolder } from "@/actions/folder/folder";
-import React, { useState } from "react";
-import { CgClose } from "react-icons/cg";
+import { getUser } from "@/Utils/appwrite";
+import React, { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function NewFolder({
   setFolders,
@@ -13,8 +16,14 @@ export default function NewFolder({
 }) {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = async () => {
+    const user = await getUser();
+    if (!user) {
+      toast.error("Login First");
+      return;
+    }
     if (!name.trim()) {
       alert("Folder name cannot be empty");
       return;
@@ -34,32 +43,51 @@ export default function NewFolder({
       setLoading(false);
     }
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="w-full md:w-[500px] px-4 py-8 rounded-lg bg-white dark:bg-gray-500 flex flex-col gap-3">
+      <div
+        ref={dropdownRef}
+        className="w-full md:w-[600px] py-8 px-6 rounded-lg bg-white dark:bg-[#131314] flex flex-col gap-3"
+      >
         <h1 className="text-center text-2xl font-semibold mb-4">New Folder</h1>
         <input
-          className="w-full p-2 border-2 border-gray-300 rounded-lg outline-none dark:border-none dark:bg-gray-900"
+          className="w-full p-2 border-2 border-gray-300 rounded-lg outline-none
+          dark:bg-transparent dark:border-2 dark:border-[#37393B]"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Name of Folder"
+          placeholder="Name of File"
         />
 
         <div className="flex gap-2 justify-end self-end">
           <button
             onClick={() => setIsOpen(false)}
-            className="w-fit m-auto cursor-pointer transition-all dark:bg-slate-900  px-4 py-2 rounded-3xl hover:bg-blue-100 mt-4 duration-400"
+            className="w-fit text-md font-semibold m-auto cursor-pointer transition-all  px-4 py-2 rounded-2xl hover:bg-blue-100 mt-4 duration-400
+            dark:bg-transparent dark:text-blue-400"
           >
-            {loading ? (
-              <div className="w-6 h-6 border-2 border-t-2 border-t-gray-500 rounded-full animate-spin"></div>
-            ) : (
-              "Cancel"
-            )}
+            Cancel
           </button>
           <button
             onClick={handleSubmit}
-            className="w-fit m-auto cursor-pointer transition-all dark:bg-slate-900  px-4 py-2 rounded-3xl hover:bg-blue-100 mt-4 duration-400"
+            className="w-fit text-md font-semibold m-auto cursor-pointer transition-all  px-4 py-2 rounded-2xl hover:bg-blue-100 mt-4 duration-400
+            dark:bg-transparent dark:text-blue-400"
           >
             {loading ? (
               <div className="w-6 h-6 border-2 border-t-2 border-t-gray-500 rounded-full animate-spin"></div>

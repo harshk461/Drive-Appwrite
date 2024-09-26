@@ -1,10 +1,9 @@
 "use client";
 
-import { AddNewFile } from "@/actions/file/file";
 import { UploadFileInFolder } from "@/actions/folder/folder";
 import { getUser } from "@/Utils/appwrite";
-import React, { useState, useEffect } from "react";
-import { CgClose } from "react-icons/cg";
+import React, { useState, useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 
 export default function NewFile({
   setFiles,
@@ -17,9 +16,16 @@ export default function NewFile({
 }) {
   const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState("");
+  const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const handleSubmit = async () => {
+    if (!user) {
+      toast.error("Login First");
+      return;
+    }
     setLoading(true);
     if (file && email.trim() !== "") {
       try {
@@ -47,6 +53,7 @@ export default function NewFile({
       const userData = await getUser();
       const email = userData?.email ?? "";
       setEmail(email);
+      setUser(user);
     };
 
     fetchUser();
@@ -57,18 +64,33 @@ export default function NewFile({
       setFile(e.target.files[0]);
     }
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-      <CgClose
-        color="white"
-        className="absolute top-10 right-10 cursor-pointer"
-        size={30}
-        onClick={() => setIsOpen(false)}
-      />
-      <div className="w-full md:w-[600px] p-4 rounded-lg bg-white dark:bg-gray-500 flex flex-col gap-3">
+      <div
+        ref={dropdownRef}
+        className="w-full md:w-[600px] py-8 px-6 rounded-lg bg-white dark:bg-[#131314] flex flex-col gap-3"
+      >
         <h1 className="text-center text-2xl font-semibold">Add New File</h1>
         <input
-          className="w-full p-2 border-2 border-gray-300 rounded-lg outline-none dark:border-none dark:bg-gray-900"
+          className="w-full p-2 border-2 border-gray-300 rounded-lg outline-none
+          dark:bg-transparent dark:border-2 dark:border-[#37393B]"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -79,20 +101,30 @@ export default function NewFile({
           id="picture"
           type="file"
           onChange={handleFileChange}
-          className="flex h-10 w-full rounded-lg border border-input bg-white px-3 py-2 text-sm text-gray-400 file:border-0 
-              file:bg-transparent file:text-gray-600 file:text-sm file:font-medium dark:bg-gray-900 dark:border-none"
+          className="flex h-10 w-full rounded-lg border border-input bg-white px-3 py-2 text-md text-gray-400 file:border-0 
+              file:bg-transparent file:text-gray-600 file:text-sm file:font-medium dark:bg-transparent dark:border-2 dark:border-[#37393B]"
         />
 
-        <button
-          onClick={handleSubmit}
-          className="w-fit m-auto cursor-pointer transition-all bg-blue-500 dark:bg-slate-900 text-white px-6 py-2 rounded-lg mt-4"
-        >
-          {loading ? (
-            <div className="w-6 h-6 border-2 border-t-2 border-t-gray-500 rounded-full animate-spin"></div>
-          ) : (
-            "Submit"
-          )}
-        </button>
+        <div className="flex gap-2 justify-end self-end">
+          <button
+            onClick={() => setIsOpen(false)}
+            className="w-fit text-md font-semibold m-auto cursor-pointer transition-all  px-4 py-2 rounded-2xl hover:bg-blue-100 mt-4 duration-400
+            dark:bg-transparent dark:text-blue-400"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSubmit}
+            className="w-fit text-md font-semibold m-auto cursor-pointer transition-all  px-4 py-2 rounded-2xl hover:bg-blue-100 mt-4 duration-400
+            dark:bg-transparent dark:text-blue-400"
+          >
+            {loading ? (
+              <div className="w-6 h-6 border-2 border-t-2 border-t-gray-500 rounded-full animate-spin"></div>
+            ) : (
+              "Submit"
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
